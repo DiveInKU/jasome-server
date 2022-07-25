@@ -10,14 +10,14 @@ spring:
     url:
     username:
     password:
-    security:
-      oauth2:
-        client:
-          registration:
-            google:
-              client-id:
-              client-secret:
-              scope:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id:
+#            client-secret:
+#            scope:
 
 jwt:
   secret:
