@@ -3,6 +3,11 @@ name: deploy
 on:
   push:
     branches: [ master, develop ]
+    
+env:
+  S3_BUCKET_NAME: jasome-bucket
+  AWS_REGION: ap-northeast-2
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,3 +38,17 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
+        
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_DEPLOY }}
+          aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_KEY_DEPLOY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
