@@ -7,6 +7,8 @@ on:
 env:
   S3_BUCKET_NAME: jasome-bucket
   AWS_REGION: ap-northeast-2
+  CODE_DEPLOY_APPLICATION_NAME: my-codedeploy-app
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: my-codedeployment-group
   
 jobs:
   build:
