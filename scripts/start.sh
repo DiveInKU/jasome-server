@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo ">> strat.sh"
+
 PROJECT_ROOT="/home/ubuntu/app"
 JAR_FILE="$PROJECT_ROOT/spring-webapp.jar"
 
