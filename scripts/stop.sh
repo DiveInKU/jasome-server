@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 echo -e "\
- +-------------------------+
- |         2. stop         |
- +-------------------------+"
+ +------------------------------------+
+ |              2. stop               |
+ +------------------------------------+"
 
 PROJECT_ROOT="/home/ubuntu/jasome-server"
 JAR_FILE="$PROJECT_ROOT/build/libs/jasome-0.0.1-SNAPSHOT.jar"
@@ -17,8 +17,8 @@ CURRENT_PID=$(pgrep -f $JAR_FILE)
 
 # 프로세스가 켜져 있으면 종료
 if [ -z $CURRENT_PID ]; then
-  echo "$TIME_NOW > 현재 실행중인 애플리케이션이 없습니다" >> $DEPLOY_LOG
+  echo "$TIME_NOW > 현재 실행중인 애플리케이션이 없습니다" | tee -a $DEPLOY_LOG
 else
-  echo "$TIME_NOW > 실행중인 $CURRENT_PID 애플리케이션 종료 " >> $DEPLOY_LOG
+  echo "$TIME_NOW > 실행중인 $CURRENT_PID 애플리케이션 종료 " | tee -a $DEPLOY_LOG
   kill -15 $CURRENT_PID
 fi
