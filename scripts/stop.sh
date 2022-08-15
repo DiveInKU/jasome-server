@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-echo ">> stop.sh"
+echo -e "\
+ +-------------------------+
+ |         2. stop         |
+ +-------------------------+"
 
-PROJECT_ROOT="/home/ubuntu/app"
-JAR_FILE="$PROJECT_ROOT/spring-webapp.jar"
+PROJECT_ROOT="/home/ubuntu/jasome-server"
+JAR_FILE="$PROJECT_ROOT/build/libs/jasome-0.0.1-SNAPSHOT.jar"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
