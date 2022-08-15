@@ -43,6 +43,20 @@ jobs:
         
       - name: Test with Gradle
         run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test
+        
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: ${{ secrets.REMOTE_SSH_ID }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
+          script: |
+            whoami
+            cd /home/ubuntu/jasome-server
+            ./scripts/build.sh
+            ./scripts/stop.sh
+            ./scripts/start.sh
       
 #       - name: Configure AWS credentials
 #         uses: aws-actions/configure-aws-credentials@v1
