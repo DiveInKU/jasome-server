@@ -21,6 +21,8 @@ public class SecurityConfig {
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/health").permitAll()
+                // for test
+                .antMatchers("/test").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();
