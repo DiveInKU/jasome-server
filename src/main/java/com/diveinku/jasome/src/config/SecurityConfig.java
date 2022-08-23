@@ -23,6 +23,9 @@ public class SecurityConfig {
                 .antMatchers("/health").permitAll()
                 // for test
                 .antMatchers("/test").permitAll()
+                // auth api
+                .antMatchers("/api/auth").permitAll()
+                // else
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();

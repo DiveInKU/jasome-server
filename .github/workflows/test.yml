@@ -2,8 +2,8 @@ name: test
 
 on:
   push:
-    branches: [ feature/* ]
-  
+    branches: [ feature/*, bugfix, hotfix ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,4 +36,4 @@ jobs:
         shell: bash
         
       - name: Test with Gradle
-        run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test
+        run: ./gradlew test

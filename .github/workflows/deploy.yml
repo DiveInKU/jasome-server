@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches: [ develop ]
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
         shell: bash
         
       - name: Test with Gradle
-        run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test
+        run: ./gradlew test
         
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -49,6 +49,12 @@ jobs:
             whoami
             cd /home/ubuntu/jasome-server
             echo "${{ secrets.SECRET_YML }}" > ./src/main/resources/application-secret.yml
-            ./scripts/build.sh
-            ./scripts/stop.sh
-            ./scripts/start.sh
+            
+            echo ">>>>>> git pull... "
+            git fetch --all || exit 1
+            git reset --hard origin/develop || exit 1
+            git pull origin develop || exit 1
+            
+            ./scripts/build.sh || exit 1
+            ./scripts/stop.sh || exit 1
+            ./scripts/start.sh || exit 1
