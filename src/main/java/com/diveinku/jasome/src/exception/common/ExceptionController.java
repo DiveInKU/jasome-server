@@ -1,12 +1,15 @@
-package com.diveinku.jasome.src.exception;
+package com.diveinku.jasome.src.exception.common;
 
+import com.diveinku.jasome.src.exception.ExceptionCodeAndMessage;
+import com.diveinku.jasome.src.exception.common.JasomeException;
+import com.diveinku.jasome.src.exception.common.JasomeExceptionDto;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @RestControllerAdvice
 @Slf4j

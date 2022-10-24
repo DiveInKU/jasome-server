@@ -3,6 +3,8 @@ package com.diveinku.jasome.src.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,7 +23,7 @@ import java.util.Set;
 
 @Configuration
 @EnableWebMvc
-public class SwaggerConfig {
+public class SwaggerConfig implements WebMvcConfigurer {
 
     private ApiInfo swaggerInfo() {
         return new ApiInfoBuilder().title("Jasome API")
@@ -72,5 +74,15 @@ public class SwaggerConfig {
         Set<String> produces = new HashSet<>();
         produces.add("application/json;charset=UTF-8");
         return produces;
+    }
+
+    // api가 없을 경우 resource에서 찾아보는 기능을 껐으므로 swagger를 위해 설정을 추가해준다.
+    // 참고: https://tecoble.techcourse.co.kr/post/2021-11-24-spring-customize-unhandled-api/
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }

@@ -1,13 +1,14 @@
-package com.diveinku.jasome.src.exception;
+package com.diveinku.jasome.src.exception.common;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-//@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
 public class JasomeExceptionDto {
-    private String code;
+    private int code;
     private String message;
 }

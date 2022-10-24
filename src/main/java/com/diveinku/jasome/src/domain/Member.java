@@ -9,14 +9,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor (access = AccessLevel.PROTECTED)
-@Where(clause = "deleted = false")
-@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
+// @Where(clause = "deleted = false")
+// @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
 public class Member {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     @Column(unique = true)
@@ -26,24 +26,13 @@ public class Member {
 
     private String password;
 
-    private Role role;
-
     @Column(columnDefinition = "boolean default false")
     private boolean deleted;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @CreationTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
     @Builder
-    public Member(String email, String name, String password, Role role) {
+    public Member(String email, String name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;
-        this.role = role;
     }
 }
