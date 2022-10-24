@@ -4,6 +4,7 @@ import com.diveinku.jasome.src.exception.common.*;
 import com.diveinku.jasome.src.exception.member.DuplicateEmailException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Arrays;
@@ -20,8 +21,17 @@ public enum ExceptionCodeAndMessage {
     INVALID_TOKEN(1003, "Access token 값을 확인해주세요.", InvalidTokenException.class),
     AUTH_DENIED(1004, "해당하는 유저의 권한으로 접근할 수 없는 요청입니다.", AuthDeniedException.class),
 
+    // Valid 체크
+    COMMON_INVALID_FIELD(1100, "항목을 확인해주세요.", MethodArgumentNotValidException.class),
+    COMMON_UNMATCHED_REGEX(1101, "항목이 형식과 맞지 않습니다.", MethodArgumentNotValidException.class),
+    EMPTY_FIELD(1110,  "빈 항목을 입력해주세요.", MethodArgumentNotValidException.class),
+    INVALID_EMAIL(1111, "이메일 형식을 확인해주세요.", MethodArgumentNotValidException.class),
+    INVALID_PASSWORD(1112, "비밀번호는 6자 이상, 20자 이상의 영어와 숫자가 포함된 문자열입니다.", MethodArgumentNotValidException.class),
+    INVALID_NAME(1113, "이름은 1자 이상, 20자 이하의 문자열입니다.", MethodArgumentNotValidException.class),
+
     // 멤버
     DUPLICATE_EMAIL(2001, "중복된 이메일입니다.",DuplicateEmailException.class);
+
 
     private final int code;
     private final String message;

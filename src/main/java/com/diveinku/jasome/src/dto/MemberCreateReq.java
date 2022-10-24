@@ -15,18 +15,17 @@ import static com.diveinku.jasome.src.commons.ValidationMessage.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class MemberCreateReq {
-    @NotBlank(message = EMPTY_FIELD)
-    @Email(message = INVALID_EMAIL)
+    @NotBlank
+    @Email
     private String email;
 
-    @NotBlank(message = EMPTY_FIELD)
-    @Pattern(regexp = MEMBER_NAME_FORMAT, message = INVALID_NAME)
+    @NotBlank
+    @Pattern(regexp = MEMBER_NAME_FORMAT)
     private String name;
 
-    @NotBlank(message = EMPTY_FIELD)
-    @Pattern(regexp = MEMBER_PASSWORD_FORMAT, message = INVALID_PASSWORD)
+    @NotBlank
+    @Pattern(regexp = MEMBER_PASSWORD_FORMAT)
     private String password;
 
 }
