@@ -33,7 +33,9 @@ public enum ExceptionCodeAndMessage {
     // 멤버
     DUPLICATE_EMAIL(2001, "중복된 이메일입니다.", DuplicateEmailException.class),
     EMAIL_NOT_EXISTS(2002, "해당하는 이메일의 유저가 없습니다.", NonExistentEmailException.class),
-    INCORRECT_PASSWORD(2003, "비밀번호가 일치하지 않습니다.", IncorrectPasswordException.class);
+    INCORRECT_PASSWORD(2003, "비밀번호가 일치하지 않습니다.", IncorrectPasswordException.class),
+    INCORRECT_ID(2004, "존재하지 않는 유저입니다.", NonExistentMemberException.class)
+    ;
 
     private final int code;
     private final String message;

@@ -2,9 +2,11 @@ package com.diveinku.jasome.src.service;
 
 import com.diveinku.jasome.src.domain.Member;
 import com.diveinku.jasome.src.dto.LoginReq;
+import com.diveinku.jasome.src.dto.MemberProfileRes;
 import com.diveinku.jasome.src.exception.member.DuplicateEmailException;
 import com.diveinku.jasome.src.exception.member.IncorrectPasswordException;
 import com.diveinku.jasome.src.exception.member.NonExistentEmailException;
+import com.diveinku.jasome.src.exception.member.NonExistentMemberException;
 import com.diveinku.jasome.src.repository.MemberRepository;
 import com.diveinku.jasome.src.util.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +50,16 @@ public class MemberService {
     }
 
     public String authenticateMember(LoginReq loginReq) {
-        Optional<Member> member = memberRepository.findByEmail(loginReq.getEmail());
-        if (member.isEmpty())
-            throw new NonExistentEmailException();
-        if (!passwordEncoder.matches(loginReq.getPassword(), member.get().getPassword()))
+        Member member = memberRepository.findByEmail(loginReq.getEmail())
+                .orElseThrow(NonExistentEmailException::new);
+        if (!passwordEncoder.matches(loginReq.getPassword(), member.getPassword()))
             throw new IncorrectPasswordException();
-        return jwtService.createJwt(member.get().getId());
+        return jwtService.createJwt(member.getId());
+    }
+
+    public MemberProfileRes retrieveMemberProfile(long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NonExistentMemberException::new);
+        return new MemberProfileRes(member.getEmail(), member.getName());
     }
 }

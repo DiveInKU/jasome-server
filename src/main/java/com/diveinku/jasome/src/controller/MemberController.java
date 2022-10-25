@@ -5,7 +5,9 @@ import com.diveinku.jasome.src.commons.NoAuth;
 import com.diveinku.jasome.src.domain.Member;
 import com.diveinku.jasome.src.dto.LoginReq;
 import com.diveinku.jasome.src.dto.MemberCreateReq;
+import com.diveinku.jasome.src.dto.MemberProfileRes;
 import com.diveinku.jasome.src.service.MemberService;
+import com.diveinku.jasome.src.util.JwtService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -28,10 +30,13 @@ public class MemberController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final JwtService jwtService;
+
     @Autowired
-    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder) {
+    public MemberController(MemberService memberService, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.memberService = memberService;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @NoAuth
@@ -73,21 +78,22 @@ public class MemberController {
             @ApiResponse(code = 200, message = "1000: 요청 성공"),
             @ApiResponse(code = 400, message =
                     "1111: 잘못된 이메일 형식 <br>" +
-                    "2002: 해당하는 이메일의 유저가 없음 <br>" +
-                    "2003: 비밀번호가 일치하지 않음 <br>"),
+                            "2002: 해당하는 이메일의 유저가 없음 <br>" +
+                            "2003: 비밀번호가 일치하지 않음 <br>"),
     })
-    public ResponseEntity<CommonResponse<String>> login(@RequestBody @Valid LoginReq loginReq){
+    public ResponseEntity<CommonResponse<String>> login(@RequestBody @Valid LoginReq loginReq) {
         return ResponseEntity.ok(CommonResponse.from(memberService.authenticateMember(loginReq)));
     }
 
-    // @GetMapping("")
-    // @ApiOperation(value = "멤버 프로필 조회")
-    // @ApiResponses(value = {
-    //         @ApiResponse(code = 200, message = "1000: 요청 성공"),
-    //         @ApiResponse(code = 400, message =
-    //                 "1111: 잘못된 이메일 형식 <br>" +
-    //                         "2002: 해당하는 이메일의 유저가 없음 <br>" +
-    //                         "2003: 비밀번호가 일치하지 않음 <br>"),
-    // })
-    // public ResponseEntity
+    @GetMapping("")
+    @ApiOperation(value = "멤버 프로필 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                            "2004: 존재하지 않는 유저 <br>"),
+    })
+    public ResponseEntity<CommonResponse<MemberProfileRes>> getMemberProfile() {
+        long memberId = jwtService.getMemberIdFromJwt();
+        return ResponseEntity.ok(CommonResponse.from(memberService.retrieveMemberProfile(memberId)));
+    }
 }
