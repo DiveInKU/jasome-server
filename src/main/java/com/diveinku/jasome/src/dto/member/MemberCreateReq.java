@@ -1,4 +1,4 @@
-package com.diveinku.jasome.src.dto;
+package com.diveinku.jasome.src.dto.member;
 
 import com.diveinku.jasome.src.commons.ValidationMessage;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.diveinku.jasome.src.service;
 
 import com.diveinku.jasome.src.domain.Member;
-import com.diveinku.jasome.src.dto.LoginReq;
-import com.diveinku.jasome.src.dto.MemberProfileRes;
+import com.diveinku.jasome.src.dto.member.LoginReq;
+import com.diveinku.jasome.src.dto.member.MemberProfileRes;
 import com.diveinku.jasome.src.exception.member.DuplicateEmailException;
 import com.diveinku.jasome.src.exception.member.IncorrectPasswordException;
 import com.diveinku.jasome.src.exception.member.NonExistentEmailException;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @Transactional

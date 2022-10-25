@@ -1,4 +1,4 @@
-package com.diveinku.jasome.src.dto;
+package com.diveinku.jasome.src.dto.member;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
+
 import javax.validation.constraints.NotBlank;
 
 @Getter

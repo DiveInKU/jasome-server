@@ -3,9 +3,9 @@ package com.diveinku.jasome.src.controller;
 import com.diveinku.jasome.src.commons.CommonResponse;
 import com.diveinku.jasome.src.commons.NoAuth;
 import com.diveinku.jasome.src.domain.Member;
-import com.diveinku.jasome.src.dto.LoginReq;
-import com.diveinku.jasome.src.dto.MemberCreateReq;
-import com.diveinku.jasome.src.dto.MemberProfileRes;
+import com.diveinku.jasome.src.dto.member.LoginReq;
+import com.diveinku.jasome.src.dto.member.MemberCreateReq;
+import com.diveinku.jasome.src.dto.member.MemberProfileRes;
 import com.diveinku.jasome.src.service.MemberService;
 import com.diveinku.jasome.src.util.JwtService;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +23,7 @@ import javax.validation.constraints.Email;
 @RestController
 @RequestMapping("/members")
 @Validated // PathVariable과 RequestParam으로 들어오는 값 유효성 체크 위함
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+// @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
