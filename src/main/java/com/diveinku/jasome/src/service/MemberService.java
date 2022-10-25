@@ -48,14 +48,10 @@ public class MemberService {
     }
 
     public String authenticateMember(LoginReq loginReq) {
-        String encryptedPassword = passwordEncoder.encode(loginReq.getPassword());
-        System.out.println("loginReq = " + loginReq.getPassword());
-        System.out.println("encryptedPassword = " + encryptedPassword);
         Optional<Member> member = memberRepository.findByEmail(loginReq.getEmail());
         if (member.isEmpty())
             throw new NonExistentEmailException();
-        System.out.println("member.get().getPassword() = " + member.get().getPassword());
-        if (!member.get().getPassword().equals(encryptedPassword))
+        if (!passwordEncoder.matches(loginReq.getPassword(), member.get().getPassword()))
             throw new IncorrectPasswordException();
         return jwtService.createJwt(member.get().getId());
     }
