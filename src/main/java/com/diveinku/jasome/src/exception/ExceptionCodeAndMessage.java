@@ -1,7 +1,7 @@
 package com.diveinku.jasome.src.exception;
 
 import com.diveinku.jasome.src.exception.common.*;
-import com.diveinku.jasome.src.exception.member.DuplicateEmailException;
+import com.diveinku.jasome.src.exception.member.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,9 +18,10 @@ public enum ExceptionCodeAndMessage {
     NOT_FOUND(1002, "잘못된 API 경로입니다.", NoHandlerFoundException.class),
 
     // 인증 인가
-    INVALID_TOKEN(1003, "Access token 값을 확인해주세요.", InvalidTokenException.class),
+    INVALID_JWT(1003, "Jwt 값을 확인해주세요.", InvalidJwtException.class),
     AUTH_DENIED(1004, "해당하는 유저의 권한으로 접근할 수 없는 요청입니다.", AuthDeniedException.class),
-
+    EMPTY_JWT(1005, "JWT 토큰을 입력해주세요.", EmptyJwtException.class),
+    EXPIRED_JWT(1006, "JWT 토큰이 만료되었습니다.", ExpiredJwtException.class),
     // Valid 체크
     COMMON_INVALID_FIELD(1100, "항목을 확인해주세요.", MethodArgumentNotValidException.class),
     COMMON_UNMATCHED_REGEX(1101, "항목이 형식과 맞지 않습니다.", MethodArgumentNotValidException.class),
@@ -30,8 +31,9 @@ public enum ExceptionCodeAndMessage {
     INVALID_NAME(1113, "이름은 1자 이상, 20자 이하의 문자열입니다.", MethodArgumentNotValidException.class),
 
     // 멤버
-    DUPLICATE_EMAIL(2001, "중복된 이메일입니다.", DuplicateEmailException.class);
-
+    DUPLICATE_EMAIL(2001, "중복된 이메일입니다.", DuplicateEmailException.class),
+    EMAIL_NOT_EXISTS(2002, "해당하는 이메일의 유저가 없습니다.", NonExistentEmailException.class),
+    INCORRECT_PASSWORD(2003, "비밀번호가 일치하지 않습니다.", IncorrectPasswordException.class);
 
     private final int code;
     private final String message;

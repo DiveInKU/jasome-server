@@ -1,7 +1,9 @@
 package com.diveinku.jasome.src.controller;
 
 import com.diveinku.jasome.src.commons.CommonResponse;
+import com.diveinku.jasome.src.commons.NoAuth;
 import com.diveinku.jasome.src.domain.Member;
+import com.diveinku.jasome.src.dto.LoginReq;
 import com.diveinku.jasome.src.dto.MemberCreateReq;
 import com.diveinku.jasome.src.service.MemberService;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/members")
@@ -33,6 +34,7 @@ public class MemberController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @NoAuth
     @GetMapping("/availability")
     @ApiOperation(value = "이메일 중복 체크. 사용 가능한 이메일일 때만 200 OK")
     @ApiResponses(value = {
@@ -46,6 +48,7 @@ public class MemberController {
         return ResponseEntity.ok(new CommonResponse<>());
     }
 
+    @NoAuth
     @PostMapping("/new")
     @ApiOperation(value = "회원가입")
     @ApiResponses(value = {
@@ -62,4 +65,29 @@ public class MemberController {
         return ResponseEntity.ok(CommonResponse.from(id));
     }
 
+
+    @NoAuth
+    @PostMapping("/login")
+    @ApiOperation(value = "로그인")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "1111: 잘못된 이메일 형식 <br>" +
+                    "2002: 해당하는 이메일의 유저가 없음 <br>" +
+                    "2003: 비밀번호가 일치하지 않음 <br>"),
+    })
+    public ResponseEntity<CommonResponse<String>> login(@RequestBody @Valid LoginReq loginReq){
+        return ResponseEntity.ok(CommonResponse.from(memberService.authenticateMember(loginReq)));
+    }
+
+    // @GetMapping("")
+    // @ApiOperation(value = "멤버 프로필 조회")
+    // @ApiResponses(value = {
+    //         @ApiResponse(code = 200, message = "1000: 요청 성공"),
+    //         @ApiResponse(code = 400, message =
+    //                 "1111: 잘못된 이메일 형식 <br>" +
+    //                         "2002: 해당하는 이메일의 유저가 없음 <br>" +
+    //                         "2003: 비밀번호가 일치하지 않음 <br>"),
+    // })
+    // public ResponseEntity
 }
