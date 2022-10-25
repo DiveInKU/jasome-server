@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();
+        http.cors();
         return http.build();
     }
 }
