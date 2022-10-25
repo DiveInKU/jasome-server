@@ -77,6 +77,7 @@ public class MemberController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "1000: 요청 성공"),
             @ApiResponse(code = 400, message =
+                    "1110: 공백 입력하거나 아무것도 입력하지 않았을 때 <br>" +
                     "1111: 잘못된 이메일 형식 <br>" +
                             "2002: 해당하는 이메일의 유저가 없음 <br>" +
                             "2003: 비밀번호가 일치하지 않음 <br>"),
