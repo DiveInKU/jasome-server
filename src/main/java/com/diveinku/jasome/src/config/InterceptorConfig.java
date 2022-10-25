@@ -4,6 +4,7 @@ import com.diveinku.jasome.src.commons.AuthenticationInterceptor;
 import com.diveinku.jasome.src.util.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -27,5 +28,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/swagger-ui/**", "/swagger-ui.html", "/swagger/**",
                         "/swagger-resources/**", "/v2/api-docs", "/health");
         WebMvcConfigurer.super.addInterceptors(registry);
+    }
+
+    @Override public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("*");
     }
 }
