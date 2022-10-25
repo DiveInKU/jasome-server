@@ -20,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 @RestController
 @RequestMapping("/members")
 @Validated // PathVariable과 RequestParam으로 들어오는 값 유효성 체크 위함
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
