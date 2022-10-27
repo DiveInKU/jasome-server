@@ -16,12 +16,12 @@ public enum ExceptionCodeAndMessage {
     // 잘못된 에러 (Exception과 대응되는 메세지를 정의하지 않았을 경우)
     NOT_FOUND_DEFINED_EXCEPTION(1001, "발생한 에러의 에러 코드가 정의되지 않았습니다.", NotFoundDefinedException.class),
     NOT_FOUND(1002, "잘못된 API 경로입니다.", NoHandlerFoundException.class),
+    AUTH_DENIED(1003, "해당하는 유저의 권한으로 접근할 수 없는 요청입니다.", AuthDeniedException.class),
 
     // 인증 인가
-    INVALID_JWT(1003, "Jwt 값을 확인해주세요.", InvalidJwtException.class),
-    AUTH_DENIED(1004, "해당하는 유저의 권한으로 접근할 수 없는 요청입니다.", AuthDeniedException.class),
-    EMPTY_JWT(1005, "JWT 토큰을 입력해주세요.", EmptyJwtException.class),
-    EXPIRED_JWT(1006, "JWT 토큰이 만료되었습니다.", ExpiredJwtException.class),
+    INVALID_JWT(1010, "JWT 값을 확인해주세요.", InvalidJwtException.class),
+    EMPTY_JWT(1011, "JWT 토큰을 입력해주세요.", EmptyJwtException.class),
+    EXPIRED_JWT(1012, "JWT 토큰이 만료되었습니다.", ExpiredJwtException.class),
     // Valid 체크
     COMMON_INVALID_FIELD(1100, "항목을 확인해주세요.", MethodArgumentNotValidException.class),
     COMMON_UNMATCHED_REGEX(1101, "항목이 형식과 맞지 않습니다.", MethodArgumentNotValidException.class),

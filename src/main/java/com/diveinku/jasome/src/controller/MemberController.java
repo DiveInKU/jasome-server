@@ -80,8 +80,12 @@ public class MemberController {
                     "1110: 공백 입력하거나 아무것도 입력하지 않았을 때 <br>" +
                     "1111: 잘못된 이메일 형식 <br>" +
                             "2002: 해당하는 이메일의 유저가 없음 <br>" +
-                            "2003: 비밀번호가 일치하지 않음 <br>"),
-    })
+                            "2003: 비밀번호가 일치하지 않음 <br>" +
+                            "----------jwt 에러----------<br>" +
+                            "1010: JWT 값 틀렸을 때(JWT값을 읽을 수가 없음)<br>" +
+                            "1011: 헤더에 JWT 토큰이 입력되지 않았을 때" +
+                            "1012: JWT 토큰이 만료됐을 때"),
+   })
     public ResponseEntity<CommonResponse<String>> login(@RequestBody @Valid LoginReq loginReq) {
         return ResponseEntity.ok(CommonResponse.from(memberService.authenticateMember(loginReq)));
     }
