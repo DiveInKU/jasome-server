@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,7 +30,7 @@ public class ResumeService {
         this.memberRepository = memberRepository;
     }
 
-    public Long createMembersResume(Long memberId, String title, List<QnaDto> qnas){
+    public Long createMembersResume(Long memberId, String title, List<QnaDto> qnas) {
         Member member = memberRepository.findOne(memberId)
                 .orElseThrow(NonExistentMemberException::new);
         Resume resume = Resume.createResume(member, title, qnas);
@@ -40,16 +41,27 @@ public class ResumeService {
     public ResumeDto getResumeById(Long resumeId) {
         Resume resume = resumeRepository.findOne(resumeId)
                 .orElseThrow(NonExistentResumeException::new);
-        List<QnaDto> qnas = new ArrayList<>();
-        for(ResumeQna originalQna : resume.getResumeQnas()){
-            qnas.add(new QnaDto(originalQna.getQuestion(), originalQna.getAnswer()));
-        }
-        return new ResumeDto(resume.getTitle(), qnas);
+        return translateToDto(resume);
     }
 
     public void updateResume(Long resumeId, String title, List<QnaDto> qnas) {
         Resume resume = resumeRepository.findOne(resumeId)
                 .orElseThrow(NonExistentResumeException::new);
         resume.updateResume(title, qnas);
+    }
+
+    public List<ResumeDto> getMembersResumes(long memberId) {
+        Member member = memberRepository.findOne(memberId)
+                .orElseThrow(NonExistentMemberException::new);
+        return resumeRepository.findAllByMemberId(member).stream().map(r -> translateToDto(r))
+                .collect(Collectors.toList());
+    }
+
+    private static ResumeDto translateToDto(Resume resume) {
+        List<QnaDto> qnas = new ArrayList<>();
+        for (ResumeQna qna : resume.getResumeQnas()) {
+            qnas.add(new QnaDto(qna.getQuestion(), qna.getAnswer()));
+        }
+        return new ResumeDto(resume.getTitle(), qnas);
     }
 }

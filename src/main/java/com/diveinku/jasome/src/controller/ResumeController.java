@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/resumes")
 public class ResumeController {
@@ -21,6 +23,18 @@ public class ResumeController {
     public ResumeController(JwtService jwtService, ResumeService resumeService) {
         this.jwtService = jwtService;
         this.resumeService = resumeService;
+    }
+
+    @GetMapping("")
+    @ApiOperation(value = "자기소개서 목록 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"),
+    })
+    public ResponseEntity<CommonResponse<List<ResumeDto>>> getResumes() {
+        long memberId = jwtService.getMemberIdFromJwt();
+        return ResponseEntity.ok(CommonResponse.from(resumeService.getMembersResumes(memberId)));
     }
 
     @PostMapping("")
