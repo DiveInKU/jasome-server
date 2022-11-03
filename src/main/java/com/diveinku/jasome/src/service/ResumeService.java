@@ -6,6 +6,7 @@ import com.diveinku.jasome.src.domain.ResumeQna;
 import com.diveinku.jasome.src.dto.QnaDto;
 import com.diveinku.jasome.src.dto.ResumeDto;
 import com.diveinku.jasome.src.exception.member.NonExistentMemberException;
+import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import com.diveinku.jasome.src.repository.MemberRepository;
 import com.diveinku.jasome.src.repository.ResumeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -38,11 +38,18 @@ public class ResumeService {
     }
 
     public ResumeDto getResumeById(Long resumeId) {
-        Resume resume = resumeRepository.findOne(resumeId);
+        Resume resume = resumeRepository.findOne(resumeId)
+                .orElseThrow(NonExistentResumeException::new);
         List<QnaDto> qnas = new ArrayList<>();
         for(ResumeQna originalQna : resume.getResumeQnas()){
             qnas.add(new QnaDto(originalQna.getQuestion(), originalQna.getAnswer()));
         }
         return new ResumeDto(resume.getTitle(), qnas);
+    }
+
+    public void updateResume(Long resumeId, String title, List<QnaDto> qnas) {
+        Resume resume = resumeRepository.findOne(resumeId)
+                .orElseThrow(NonExistentResumeException::new);
+        resume.updateResume(title, qnas);
     }
 }

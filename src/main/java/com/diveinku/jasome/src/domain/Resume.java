@@ -30,7 +30,8 @@ public class Resume {
     // 주인X ('다'쪽이 주인) 클래스에 매핑될 필드 이름 정함
     // 연관관계가 있는 엔티티는 따로 영속화해줘야 한다.
     // 하지만 필드에 cascade를 이용하면 영속화를 쭉 내려서 전파시킬 수 있다.
-    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL)
+    // orphanRemoval: 부모 엔티티의 컬렉션에서 자식 엔티티의 참조 제거하면 자식 엔티티가 자동으로 삭제
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResumeQna> resumeQnas = new ArrayList<>();
 
     // 연관관계 매서드. 단순히 리스트에 추가만하는 게 아니라 매핑해줘야 하므로 필요
@@ -51,14 +52,14 @@ public class Resume {
     }
 
     // 자소서 업데이트 메서드: 그냥 다 지우고 다시 추가한다.
-    public void updateResume(String title, List<QnaDto> qnas){
-        this.title = title;
+    public void updateResume(String title, List<QnaDto> qnas) {
+        if (!this.title.equals(title))
+            this.title = title;
         resumeQnas.clear();
         for (QnaDto qna : qnas) {
-            addResumeQna(new ResumeQna(qna.getQuestion(), qna.getQuestion()));
+            addResumeQna(new ResumeQna(qna.getQuestion(), qna.getAnswer()));
         }
     }
-
 
     public void setMember(Member member) {
         this.member = member;

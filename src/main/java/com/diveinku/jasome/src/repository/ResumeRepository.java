@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Optional;
 
 @Repository
 public class ResumeRepository {
@@ -17,7 +18,7 @@ public class ResumeRepository {
         return resume.getId();
     }
 
-    public Resume findOne(Long id){
-        return em.find(Resume.class, id);
+    public Optional<Resume> findOne(Long id){
+        return Optional.ofNullable(em.find(Resume.class, id));
     }
 }

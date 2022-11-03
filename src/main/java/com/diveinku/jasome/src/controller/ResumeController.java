@@ -30,7 +30,7 @@ public class ResumeController {
             @ApiResponse(code = 400, message =
                     "2004: 존재하지 않는 유저 <br>"),
     })
-    public ResponseEntity<CommonResponse<Long>> createResume(@RequestBody ResumeDto resumeDto){
+    public ResponseEntity<CommonResponse<Long>> createResume(@RequestBody ResumeDto resumeDto) {
         long memberId = jwtService.getMemberIdFromJwt();
         long resumeId = resumeService.createMembersResume(memberId, resumeDto.getTitle(), resumeDto.getQnas());
         return ResponseEntity.ok(CommonResponse.from(resumeId));
@@ -44,8 +44,22 @@ public class ResumeController {
                     "2004: 존재하지 않는 유저 <br>" +
                             "3001: 존재하지 않는 자기소개서"),
     })
-    public ResponseEntity<CommonResponse<ResumeDto>> getResume(@PathVariable("resumeId") Long resumeId){
+    public ResponseEntity<CommonResponse<ResumeDto>> getResume(@PathVariable("resumeId") Long resumeId) {
         return ResponseEntity.ok(CommonResponse.from(resumeService.getResumeById(resumeId)));
+    }
+
+    @PutMapping("/{resumeId}")
+    @ApiOperation(value = "자기소개서 수정")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>" +
+                            "3001: 존재하지 않는 자기소개서"),
+    })
+    public ResponseEntity<CommonResponse<Void>> modifyResume(@PathVariable("resumeId") Long resumeId,
+                                                             @RequestBody ResumeDto resumeDto) {
+        resumeService.updateResume(resumeId, resumeDto.getTitle(), resumeDto.getQnas());
+        return ResponseEntity.ok(new CommonResponse<>());
     }
 
 }
