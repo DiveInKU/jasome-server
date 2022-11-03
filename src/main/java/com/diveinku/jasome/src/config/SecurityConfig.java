@@ -32,6 +32,8 @@ public class SecurityConfig {
                         "/swagger-resources/**", "/v2/api-docs", "/health").permitAll()
                 // 멤버
                 .antMatchers("/members/**").permitAll()
+                .antMatchers("/resumes/**").permitAll()
+                .antMatchers("/interviews/**").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();

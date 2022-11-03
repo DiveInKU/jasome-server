@@ -36,4 +36,4 @@ jobs:
         shell: bash
         
       - name: Test with Gradle
-        run: ./gradlew test
+        run: ./gradlew --info test

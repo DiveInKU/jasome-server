@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Table(name = "member")
+@Getter
 @NoArgsConstructor (access = AccessLevel.PROTECTED)
 // @Where(clause = "deleted = false")
 // @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")

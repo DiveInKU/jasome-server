@@ -2,6 +2,7 @@ package com.diveinku.jasome.src.exception;
 
 import com.diveinku.jasome.src.exception.common.*;
 import com.diveinku.jasome.src.exception.member.*;
+import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,7 +35,11 @@ public enum ExceptionCodeAndMessage {
     DUPLICATE_EMAIL(2001, "중복된 이메일입니다.", DuplicateEmailException.class),
     EMAIL_NOT_EXISTS(2002, "해당하는 이메일의 유저가 없습니다.", NonExistentEmailException.class),
     INCORRECT_PASSWORD(2003, "비밀번호가 일치하지 않습니다.", IncorrectPasswordException.class),
-    INCORRECT_ID(2004, "존재하지 않는 유저입니다.", NonExistentMemberException.class)
+    INCORRECT_ID(2004, "존재하지 않는 유저입니다.", NonExistentMemberException.class),
+
+    // 자기소개서
+    INCORRECT_RESUME_ID(3001, "존재하지 않는 자기소개서입니다.", NonExistentResumeException.class),
+
     ;
 
     private final int code;

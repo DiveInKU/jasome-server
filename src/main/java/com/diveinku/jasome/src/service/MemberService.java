@@ -57,7 +57,7 @@ public class MemberService {
     }
 
     public MemberProfileRes retrieveMemberProfile(long memberId) {
-        Member member = memberRepository.findById(memberId)
+        Member member = memberRepository.findOne(memberId)
                 .orElseThrow(NonExistentMemberException::new);
         return new MemberProfileRes(member.getEmail(), member.getName());
     }

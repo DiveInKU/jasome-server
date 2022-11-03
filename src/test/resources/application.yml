@@ -1,0 +1,30 @@
+spring:
+  datasource:
+#    url: jdbc:h2:~/jasome-test
+    url: jdbc:h2:mem:jasome-test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+jwt:
+  secret:
+    access: thisisjwtsecretkeyforjasome19991117
+    refresh:
+  time:
+    access: 2592000000
+    refresh:

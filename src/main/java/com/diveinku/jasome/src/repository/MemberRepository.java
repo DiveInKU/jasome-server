@@ -20,7 +20,7 @@ public class MemberRepository {
         return member.getId();
     }
 
-    public Optional<Member> findById(Long id){
+    public Optional<Member> findOne(Long id){
         return Optional.ofNullable(em.find(Member.class, id));
     }
 
