@@ -30,4 +30,8 @@ public class ResumeRepository {
                 .getResultList();
     }
 
+    public void delete(Resume resume){
+        em.remove(resume);
+    }
+
 }

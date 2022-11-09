@@ -2,6 +2,7 @@ package com.diveinku.jasome.src.controller;
 
 import com.diveinku.jasome.src.commons.CommonResponse;
 import com.diveinku.jasome.src.dto.ResumeDto;
+import com.diveinku.jasome.src.dto.ResumePreviewDto;
 import com.diveinku.jasome.src.service.ResumeService;
 import com.diveinku.jasome.src.util.JwtService;
 import io.swagger.annotations.ApiOperation;
@@ -32,9 +33,9 @@ public class ResumeController {
             @ApiResponse(code = 400, message =
                     "2004: 존재하지 않는 유저 <br>"),
     })
-    public ResponseEntity<CommonResponse<List<ResumeDto>>> getResumes() {
+    public ResponseEntity<CommonResponse<List<ResumePreviewDto>>> getResumePreviews() {
         long memberId = jwtService.getMemberIdFromJwt();
-        return ResponseEntity.ok(CommonResponse.from(resumeService.getMembersResumes(memberId)));
+        return ResponseEntity.ok(CommonResponse.from(resumeService.getMembersResumePreviews(memberId)));
     }
 
     @PostMapping("")
@@ -76,4 +77,16 @@ public class ResumeController {
         return ResponseEntity.ok(new CommonResponse<>());
     }
 
+    @DeleteMapping("/{resumeId}")
+    @ApiOperation(value = "자기소개서 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>" +
+                            "3001: 존재하지 않는 자기소개서"),
+    })
+    public ResponseEntity<CommonResponse<Void>> deleteResume(@PathVariable("resumeId") Long resumeId) {
+        resumeService.deleteResumeById(resumeId);
+        return ResponseEntity.ok(new CommonResponse<>());
+    }
 }

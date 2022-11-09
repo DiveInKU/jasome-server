@@ -5,6 +5,7 @@ import com.diveinku.jasome.src.domain.Resume;
 import com.diveinku.jasome.src.domain.ResumeQna;
 import com.diveinku.jasome.src.dto.QnaDto;
 import com.diveinku.jasome.src.dto.ResumeDto;
+import com.diveinku.jasome.src.dto.ResumePreviewDto;
 import com.diveinku.jasome.src.exception.member.NonExistentMemberException;
 import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import com.diveinku.jasome.src.repository.MemberRepository;
@@ -50,11 +51,24 @@ public class ResumeService {
         resume.updateResume(title, qnas);
     }
 
+    public List<ResumePreviewDto> getMembersResumePreviews(long memberId) {
+        Member member = memberRepository.findOne(memberId)
+                .orElseThrow(NonExistentMemberException::new);
+        return resumeRepository.findAllByMemberId(member).stream().map(r -> new ResumePreviewDto(r.getId(), r.getTitle()))
+                .collect(Collectors.toList());
+    }
+
     public List<ResumeDto> getMembersResumes(long memberId) {
         Member member = memberRepository.findOne(memberId)
                 .orElseThrow(NonExistentMemberException::new);
         return resumeRepository.findAllByMemberId(member).stream().map(r -> translateToDto(r))
                 .collect(Collectors.toList());
+    }
+
+    public void deleteResumeById(long resumeId) {
+        Resume resume = resumeRepository.findOne(resumeId)
+                .orElseThrow(NonExistentResumeException::new);
+        resumeRepository.delete(resume);
     }
 
     private static ResumeDto translateToDto(Resume resume) {
