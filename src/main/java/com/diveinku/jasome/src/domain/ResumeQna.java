@@ -21,7 +21,9 @@ public class ResumeQna {
     @JoinColumn(name = "resume_id")
     private Resume resume;
 
+    @Column(length = 1000)
     private String question;
+    @Column(length = 1000)
     private String answer;
 
     public void setResume(Resume resume) {
