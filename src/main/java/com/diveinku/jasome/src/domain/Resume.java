@@ -64,10 +64,8 @@ public class Resume {
 
     // 자소서 업데이트 메서드: 그냥 다 지우고 다시 추가한다.
     public void updateResume(ResumeDto resumeDto) {
-        if (!this.title.equals(resumeDto.getTitle()))
-            this.title = resumeDto.getTitle();
-        if (!this.category.equals(resumeDto.getCategory()))
-            this.category = resumeDto.getCategory();
+        this.title = resumeDto.getTitle();
+        this.category = resumeDto.getCategory();
         resumeQnas.clear();
         for (QnaDto qna : resumeDto.getQnas()) {
             addResumeQna(new ResumeQna(qna.getQuestion(), qna.getAnswer()));
