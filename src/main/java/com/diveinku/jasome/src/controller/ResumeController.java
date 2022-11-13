@@ -47,7 +47,7 @@ public class ResumeController {
     })
     public ResponseEntity<CommonResponse<Long>> createResume(@RequestBody ResumeDto resumeDto) {
         long memberId = jwtService.getMemberIdFromJwt();
-        long resumeId = resumeService.createMembersResume(memberId, resumeDto.getTitle(), resumeDto.getQnas());
+        long resumeId = resumeService.createMembersResume(memberId, resumeDto);
         return ResponseEntity.ok(CommonResponse.from(resumeId));
     }
 
@@ -73,7 +73,7 @@ public class ResumeController {
     })
     public ResponseEntity<CommonResponse<Void>> modifyResume(@PathVariable("resumeId") Long resumeId,
                                                              @RequestBody ResumeDto resumeDto) {
-        resumeService.updateResume(resumeId, resumeDto.getTitle(), resumeDto.getQnas());
+        resumeService.updateResume(resumeId, resumeDto);
         return ResponseEntity.ok(new CommonResponse<>());
     }
 

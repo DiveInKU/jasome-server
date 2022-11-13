@@ -2,6 +2,7 @@ package com.diveinku.jasome.src.service;
 
 import com.diveinku.jasome.src.domain.Member;
 import com.diveinku.jasome.src.domain.Resume;
+import com.diveinku.jasome.src.domain.ResumeCategory;
 import com.diveinku.jasome.src.domain.ResumeQna;
 import com.diveinku.jasome.src.dto.QnaDto;
 import com.diveinku.jasome.src.dto.ResumeDto;
@@ -31,10 +32,10 @@ public class ResumeService {
         this.memberRepository = memberRepository;
     }
 
-    public Long createMembersResume(Long memberId, String title, List<QnaDto> qnas) {
+    public Long createMembersResume(Long memberId, ResumeDto resumeDto) {
         Member member = memberRepository.findOne(memberId)
                 .orElseThrow(NonExistentMemberException::new);
-        Resume resume = Resume.createResume(member, title, qnas);
+        Resume resume = Resume.createResume(member, resumeDto);
         resumeRepository.save(resume);
         return resume.getId();
     }
@@ -45,10 +46,10 @@ public class ResumeService {
         return translateToDto(resume);
     }
 
-    public void updateResume(Long resumeId, String title, List<QnaDto> qnas) {
+    public void updateResume(Long resumeId, ResumeDto resumeDto) {
         Resume resume = resumeRepository.findOne(resumeId)
                 .orElseThrow(NonExistentResumeException::new);
-        resume.updateResume(title, qnas);
+        resume.updateResume(resumeDto);
     }
 
     public List<ResumePreviewDto> getMembersResumePreviews(long memberId) {
@@ -76,6 +77,6 @@ public class ResumeService {
         for (ResumeQna qna : resume.getResumeQnas()) {
             qnas.add(new QnaDto(qna.getQuestion(), qna.getAnswer()));
         }
-        return new ResumeDto(resume.getTitle(), qnas);
+        return new ResumeDto(resume.getTitle(), resume.getResumeCategory(), qnas);
     }
 }

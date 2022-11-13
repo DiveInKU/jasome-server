@@ -1,7 +1,10 @@
 package com.diveinku.jasome.src.domain;
 
 import com.diveinku.jasome.src.dto.QnaDto;
+import com.diveinku.jasome.src.dto.ResumeDto;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ Resume와 ResumeQna가 있다.
 @Entity
 @Table(name = "resume")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Resume {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "resume_id")
@@ -25,6 +29,9 @@ public class Resume {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Enumerated(EnumType.STRING)
+    private ResumeCategory resumeCategory;
+
     private String title;
 
     // 주인X ('다'쪽이 주인) 클래스에 매핑될 필드 이름 정함
@@ -34,6 +41,12 @@ public class Resume {
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResumeQna> resumeQnas = new ArrayList<>();
 
+    private Resume(Member member, String title, ResumeCategory resumeCategory) {
+        this.member = member;
+        this.title = title;
+        this.resumeCategory = resumeCategory;
+    }
+
     // 연관관계 매서드. 단순히 리스트에 추가만하는 게 아니라 매핑해줘야 하므로 필요
     public void addResumeQna(ResumeQna resumeQna) {
         resumeQnas.add(resumeQna);
@@ -41,31 +54,24 @@ public class Resume {
     }
 
     // 자소서 생성 메서드
-    public static Resume createResume(Member member, String title, List<QnaDto> qnas) {
-        Resume resume = new Resume();
-        resume.setMember(member);
-        resume.setTitle(title);
-        for (QnaDto qna : qnas) {
+    public static Resume createResume(Member member, ResumeDto resumeDto) {
+        Resume resume = new Resume(member, resumeDto.getTitle(), resumeDto.getResumeCategory());
+        for (QnaDto qna : resumeDto.getQnas()) {
             resume.addResumeQna(new ResumeQna(qna.getQuestion(), qna.getAnswer()));
         }
         return resume;
     }
 
     // 자소서 업데이트 메서드: 그냥 다 지우고 다시 추가한다.
-    public void updateResume(String title, List<QnaDto> qnas) {
-        if (!this.title.equals(title))
-            this.title = title;
+    public void updateResume(ResumeDto resumeDto) {
+        if (!this.title.equals(resumeDto.getTitle()))
+            this.title = resumeDto.getTitle();
+        if (!this.resumeCategory.equals(resumeDto.getResumeCategory()))
+            this.resumeCategory = resumeDto.getResumeCategory();
         resumeQnas.clear();
-        for (QnaDto qna : qnas) {
+        for (QnaDto qna : resumeDto.getQnas()) {
             addResumeQna(new ResumeQna(qna.getQuestion(), qna.getAnswer()));
         }
     }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }
