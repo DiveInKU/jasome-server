@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 public class ResumeDto {
     private String title;
-    private ResumeCategory resumeCategory;
+    private ResumeCategory category;
     private List<QnaDto> qnas;
 }

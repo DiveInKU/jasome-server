@@ -2,7 +2,6 @@ package com.diveinku.jasome.src.service;
 
 import com.diveinku.jasome.src.domain.Member;
 import com.diveinku.jasome.src.domain.Resume;
-import com.diveinku.jasome.src.domain.ResumeCategory;
 import com.diveinku.jasome.src.domain.ResumeQna;
 import com.diveinku.jasome.src.dto.QnaDto;
 import com.diveinku.jasome.src.dto.ResumeDto;
@@ -77,6 +76,6 @@ public class ResumeService {
         for (ResumeQna qna : resume.getResumeQnas()) {
             qnas.add(new QnaDto(qna.getQuestion(), qna.getAnswer()));
         }
-        return new ResumeDto(resume.getTitle(), resume.getResumeCategory(), qnas);
+        return new ResumeDto(resume.getTitle(), resume.getCategory(), qnas);
     }
 }

@@ -30,7 +30,7 @@ public class Resume {
     private Member member;
 
     @Enumerated(EnumType.STRING)
-    private ResumeCategory resumeCategory;
+    private ResumeCategory category;
 
     private String title;
 
@@ -41,10 +41,10 @@ public class Resume {
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResumeQna> resumeQnas = new ArrayList<>();
 
-    private Resume(Member member, String title, ResumeCategory resumeCategory) {
+    private Resume(Member member, String title, ResumeCategory category) {
         this.member = member;
         this.title = title;
-        this.resumeCategory = resumeCategory;
+        this.category = category;
     }
 
     // 연관관계 매서드. 단순히 리스트에 추가만하는 게 아니라 매핑해줘야 하므로 필요
@@ -55,7 +55,7 @@ public class Resume {
 
     // 자소서 생성 메서드
     public static Resume createResume(Member member, ResumeDto resumeDto) {
-        Resume resume = new Resume(member, resumeDto.getTitle(), resumeDto.getResumeCategory());
+        Resume resume = new Resume(member, resumeDto.getTitle(), resumeDto.getCategory());
         for (QnaDto qna : resumeDto.getQnas()) {
             resume.addResumeQna(new ResumeQna(qna.getQuestion(), qna.getAnswer()));
         }
@@ -66,8 +66,8 @@ public class Resume {
     public void updateResume(ResumeDto resumeDto) {
         if (!this.title.equals(resumeDto.getTitle()))
             this.title = resumeDto.getTitle();
-        if (!this.resumeCategory.equals(resumeDto.getResumeCategory()))
-            this.resumeCategory = resumeDto.getResumeCategory();
+        if (!this.category.equals(resumeDto.getCategory()))
+            this.category = resumeDto.getCategory();
         resumeQnas.clear();
         for (QnaDto qna : resumeDto.getQnas()) {
             addResumeQna(new ResumeQna(qna.getQuestion(), qna.getAnswer()));

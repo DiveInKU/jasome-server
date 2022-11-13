@@ -5,12 +5,10 @@ import com.diveinku.jasome.src.domain.ResumeCategory;
 import com.diveinku.jasome.src.dto.QnaDto;
 import com.diveinku.jasome.src.domain.Resume;
 import com.diveinku.jasome.src.dto.ResumeDto;
-import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
@@ -80,7 +78,7 @@ class ResumeRepositoryTest {
         for (int i = 0; i < newQnas.size(); i++) {
             Assertions.assertThat(foundResume.getResumeQnas().get(i).getQuestion()).isEqualTo(newQnas.get(i).getQuestion());
             Assertions.assertThat(foundResume.getResumeQnas().get(i).getAnswer()).isEqualTo(newQnas.get(i).getAnswer());
-            Assertions.assertThat(foundResume.getResumeCategory()).isEqualTo(resume.getResumeCategory());
+            Assertions.assertThat(foundResume.getCategory()).isEqualTo(resume.getCategory());
         }
         Assertions.assertThat(foundResume).isSameAs(resume);
     }
