@@ -3,6 +3,7 @@ package com.diveinku.jasome.src.controller;
 import com.diveinku.jasome.src.commons.CommonResponse;
 import com.diveinku.jasome.src.commons.NoAuth;
 import com.diveinku.jasome.src.domain.Member;
+import com.diveinku.jasome.src.dto.InterviewQuestionDto;
 import com.diveinku.jasome.src.dto.member.LoginReq;
 import com.diveinku.jasome.src.dto.member.MemberCreateReq;
 import com.diveinku.jasome.src.dto.member.MemberProfileRes;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -100,5 +102,30 @@ public class MemberController {
     public ResponseEntity<CommonResponse<MemberProfileRes>> getMemberProfile() {
         long memberId = jwtService.getMemberIdFromJwt();
         return ResponseEntity.ok(CommonResponse.from(memberService.retrieveMemberProfile(memberId)));
+    }
+
+    @GetMapping("/questions")
+    @ApiOperation(value = "사용자 정의 질문 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"),
+    })
+    public ResponseEntity<CommonResponse<List<InterviewQuestionDto>>> getInterviewQuestions() {
+        long memberId = jwtService.getMemberIdFromJwt();
+        return ResponseEntity.ok(new CommonResponse<>(memberService.getQuestions(memberId)));
+    }
+
+    @PostMapping("/questions")
+    @ApiOperation(value = "사용자 정의 질문 추가")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"),
+    })
+    public ResponseEntity<CommonResponse<Void>> addInterviewQuestions(@RequestBody List<InterviewQuestionDto> questions) {
+        long memberId = jwtService.getMemberIdFromJwt();
+        memberService.addQuestions(memberId, questions);
+        return ResponseEntity.ok(new CommonResponse<>());
     }
 }

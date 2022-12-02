@@ -1,6 +1,7 @@
 package com.diveinku.jasome.src.service;
 
 import com.diveinku.jasome.src.domain.Member;
+import com.diveinku.jasome.src.dto.InterviewQuestionDto;
 import com.diveinku.jasome.src.dto.member.LoginReq;
 import com.diveinku.jasome.src.dto.member.MemberProfileRes;
 import com.diveinku.jasome.src.exception.member.DuplicateEmailException;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -60,5 +63,19 @@ public class MemberService {
         Member member = memberRepository.findOne(memberId)
                 .orElseThrow(NonExistentMemberException::new);
         return new MemberProfileRes(member.getEmail(), member.getName());
+    }
+
+    public void addQuestions(long memberId, List<InterviewQuestionDto> questions) {
+        Member member = memberRepository.findOne(memberId)
+                .orElseThrow(NonExistentMemberException::new);
+        member.updateInterviewQuestion(questions);
+    }
+
+    public List<InterviewQuestionDto> getQuestions(long memberId) {
+        Member member = memberRepository.findOne(memberId)
+                .orElseThrow(NonExistentMemberException::new);
+        return member.getInterviewQuestions()
+                .stream()
+                .map(question -> new InterviewQuestionDto(question.getContent())).collect(Collectors.toList());
     }
 }

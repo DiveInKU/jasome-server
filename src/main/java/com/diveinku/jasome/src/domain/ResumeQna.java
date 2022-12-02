@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class ResumeQna {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "resume_qna")
+    @Column(name = "resume_qna_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
