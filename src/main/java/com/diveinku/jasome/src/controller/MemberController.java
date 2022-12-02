@@ -80,14 +80,14 @@ public class MemberController {
             @ApiResponse(code = 200, message = "1000: 요청 성공"),
             @ApiResponse(code = 400, message =
                     "1110: 공백 입력하거나 아무것도 입력하지 않았을 때 <br>" +
-                    "1111: 잘못된 이메일 형식 <br>" +
+                            "1111: 잘못된 이메일 형식 <br>" +
                             "2002: 해당하는 이메일의 유저가 없음 <br>" +
                             "2003: 비밀번호가 일치하지 않음 <br>" +
                             "----------jwt 에러----------<br>" +
                             "1010: JWT 값 틀렸을 때(JWT값을 읽을 수가 없음)<br>" +
                             "1011: 헤더에 JWT 토큰이 입력되지 않았을 때" +
                             "1012: JWT 토큰이 만료됐을 때"),
-   })
+    })
     public ResponseEntity<CommonResponse<String>> login(@RequestBody @Valid LoginReq loginReq) {
         return ResponseEntity.ok(CommonResponse.from(memberService.authenticateMember(loginReq)));
     }
@@ -97,7 +97,7 @@ public class MemberController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "1000: 요청 성공"),
             @ApiResponse(code = 400, message =
-                            "2004: 존재하지 않는 유저 <br>"),
+                    "2004: 존재하지 않는 유저 <br>"),
     })
     public ResponseEntity<CommonResponse<MemberProfileRes>> getMemberProfile() {
         long memberId = jwtService.getMemberIdFromJwt();
@@ -117,15 +117,33 @@ public class MemberController {
     }
 
     @PostMapping("/questions")
-    @ApiOperation(value = "사용자 정의 질문 추가")
+    @ApiOperation(value = "사용자 정의 질문 업데이트 (전체 지우고 다시 추가)")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "1000: 요청 성공"),
             @ApiResponse(code = 400, message =
                     "2004: 존재하지 않는 유저 <br>"),
     })
-    public ResponseEntity<CommonResponse<Void>> addInterviewQuestions(@RequestBody List<InterviewQuestionDto> questions) {
+    public ResponseEntity<CommonResponse<Void>> addInterviewQuestions(
+            @RequestBody List<InterviewQuestionDto> questions) {
         long memberId = jwtService.getMemberIdFromJwt();
         memberService.addQuestions(memberId, questions);
         return ResponseEntity.ok(new CommonResponse<>());
+    }
+
+    @GetMapping("/questions/random")
+    @ApiOperation(value = "랜덤 질문 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"),
+    })
+    public ResponseEntity<CommonResponse<List<InterviewQuestionDto>>> getInterviewQuestions(
+            @RequestParam boolean isCommonRandom,
+            @RequestParam boolean isMemberRandom,
+            @RequestParam int questionCount) {
+        long memberId = jwtService.getMemberIdFromJwt();
+        return ResponseEntity.ok(new CommonResponse<>(
+                memberService.getRandomQuestions(memberId, isCommonRandom, isMemberRandom, questionCount)
+        ));
     }
 }

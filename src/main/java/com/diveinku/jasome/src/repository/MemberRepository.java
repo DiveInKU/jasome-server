@@ -1,5 +1,6 @@
 package com.diveinku.jasome.src.repository;
 
+import com.diveinku.jasome.src.domain.InterviewQuestion;
 import com.diveinku.jasome.src.domain.Member;
 import org.springframework.stereotype.Repository;
 
