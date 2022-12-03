@@ -103,47 +103,4 @@ public class MemberController {
         long memberId = jwtService.getMemberIdFromJwt();
         return ResponseEntity.ok(CommonResponse.from(memberService.retrieveMemberProfile(memberId)));
     }
-
-    @GetMapping("/questions")
-    @ApiOperation(value = "사용자 정의 질문 조회")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "1000: 요청 성공"),
-            @ApiResponse(code = 400, message =
-                    "2004: 존재하지 않는 유저 <br>"),
-    })
-    public ResponseEntity<CommonResponse<List<InterviewQuestionDto>>> getInterviewQuestions() {
-        long memberId = jwtService.getMemberIdFromJwt();
-        return ResponseEntity.ok(new CommonResponse<>(memberService.getQuestions(memberId)));
-    }
-
-    @PostMapping("/questions")
-    @ApiOperation(value = "사용자 정의 질문 업데이트 (전체 지우고 다시 추가)")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "1000: 요청 성공"),
-            @ApiResponse(code = 400, message =
-                    "2004: 존재하지 않는 유저 <br>"),
-    })
-    public ResponseEntity<CommonResponse<Void>> addInterviewQuestions(
-            @RequestBody List<InterviewQuestionDto> questions) {
-        long memberId = jwtService.getMemberIdFromJwt();
-        memberService.addQuestions(memberId, questions);
-        return ResponseEntity.ok(new CommonResponse<>());
-    }
-
-    @GetMapping("/questions/random")
-    @ApiOperation(value = "랜덤 질문 조회")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "1000: 요청 성공"),
-            @ApiResponse(code = 400, message =
-                    "2004: 존재하지 않는 유저 <br>"),
-    })
-    public ResponseEntity<CommonResponse<List<InterviewQuestionDto>>> getInterviewQuestions(
-            @RequestParam boolean isCommonRandom,
-            @RequestParam boolean isMemberRandom,
-            @RequestParam int questionCount) {
-        long memberId = jwtService.getMemberIdFromJwt();
-        return ResponseEntity.ok(new CommonResponse<>(
-                memberService.getRandomQuestions(memberId, isCommonRandom, isMemberRandom, questionCount)
-        ));
-    }
 }
