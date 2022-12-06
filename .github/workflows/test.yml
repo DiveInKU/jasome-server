@@ -27,6 +27,14 @@ jobs:
           echo "${{ secrets.SECRET_YML }}" > ./application-secret.yml
         shell: bash
 
+      - name: make test application-secret.yml
+        #if: contains(github.ref, 'develop')
+        run: |
+          cd ./src/test/resources
+          touch ./application-secret.yml
+          echo "${{ secrets.TEST_YML }}" > ./application-secret.yml
+        shell: bash
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash

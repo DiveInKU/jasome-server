@@ -27,6 +27,14 @@ jobs:
           echo "${{ secrets.SECRET_YML }}" > ./application-secret.yml
         shell: bash
 
+      - name: make test application-secret.yml
+        #if: contains(github.ref, 'develop')
+        run: |
+          cd ./src/test/resources
+          touch ./application-secret.yml
+          echo "${{ secrets.TEST_YML }}" > ./application-secret.yml
+        shell: bash
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
@@ -49,6 +57,7 @@ jobs:
             whoami
             cd /home/ubuntu/jasome-server
             echo "${{ secrets.SECRET_YML }}" > ./src/main/resources/application-secret.yml
+            echo "${{ secrets.TEST_YML }}" > ./src/test/resources/application-secret.yml
             
             echo ">>>>>> git pull... "
             git fetch --all || exit 1

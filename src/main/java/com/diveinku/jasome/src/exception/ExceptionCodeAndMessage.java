@@ -1,6 +1,7 @@
 package com.diveinku.jasome.src.exception;
 
 import com.diveinku.jasome.src.exception.common.*;
+import com.diveinku.jasome.src.exception.interview.FileConvertException;
 import com.diveinku.jasome.src.exception.member.*;
 import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,8 @@ public enum ExceptionCodeAndMessage {
     // 자기소개서
     INCORRECT_RESUME_ID(3001, "존재하지 않는 자기소개서입니다.", NonExistentResumeException.class),
 
+    // 인터뷰
+    FILE_CONVERT_FAIL(4001, "파일 변환에 실패했습니다", FileConvertException.class),
     ;
 
     private final int code;

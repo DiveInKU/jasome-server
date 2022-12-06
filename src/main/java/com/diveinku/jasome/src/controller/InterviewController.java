@@ -3,6 +3,7 @@ package com.diveinku.jasome.src.controller;
 import com.diveinku.jasome.src.commons.CommonResponse;
 import com.diveinku.jasome.src.dto.InterviewQuestionDto;
 import com.diveinku.jasome.src.service.InterviewService;
+import com.diveinku.jasome.src.service.S3UploaderService;
 import com.diveinku.jasome.src.util.JwtService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,11 +20,13 @@ import java.util.List;
 public class InterviewController {
     private final JwtService jwtService;
     private final InterviewService interviewService;
+    private final S3UploaderService s3UploaderService;
 
     @Autowired
-    public InterviewController(JwtService jwtService, InterviewService interviewService) {
+    public InterviewController(JwtService jwtService, InterviewService interviewService, S3UploaderService s3UploaderService) {
         this.jwtService = jwtService;
         this.interviewService = interviewService;
+        this.s3UploaderService = s3UploaderService;
     }
 
 
@@ -67,5 +71,22 @@ public class InterviewController {
         return ResponseEntity.ok(new CommonResponse<>(
                 interviewService.getRandomQuestions(memberId, isCommonRandom, isMemberRandom, questionCount)
         ));
+    }
+
+    @PostMapping("/result/video")
+    @ApiOperation(value = "(테스트용) 면접 결과 동영상 저장한다")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"
+                            + "4001: 파일 변환 실패 <br>"),
+    })
+    public ResponseEntity<CommonResponse<Void>> postInterviewVideo(
+            @RequestPart("video") MultipartFile video
+    ) {
+        long memberId = jwtService.getMemberIdFromJwt();
+        String dirName = "jasome/users/" + memberId + "/interviews";
+        s3UploaderService.upload(video, dirName);
+        return ResponseEntity.ok(new CommonResponse<>());
     }
 }

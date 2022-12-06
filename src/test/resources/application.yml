@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    include: secret
+
   datasource:
 #    url: jdbc:h2:~/jasome-test
     url: jdbc:h2:mem:jasome-test
