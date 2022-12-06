@@ -1,7 +1,9 @@
 package com.diveinku.jasome.src.controller;
 
 import com.diveinku.jasome.src.commons.CommonResponse;
+import com.diveinku.jasome.src.commons.NoAuth;
 import com.diveinku.jasome.src.dto.InterviewQuestionDto;
+import com.diveinku.jasome.src.dto.InterviewResultDto;
 import com.diveinku.jasome.src.service.InterviewService;
 import com.diveinku.jasome.src.service.S3UploaderService;
 import com.diveinku.jasome.src.util.JwtService;
@@ -74,19 +76,38 @@ public class InterviewController {
     }
 
     @PostMapping("/result/video")
-    @ApiOperation(value = "(테스트용) 면접 결과 동영상 저장한다")
+    @ApiOperation(value = "면접 결과 동영상 저장")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "1000: 요청 성공"),
             @ApiResponse(code = 400, message =
                     "2004: 존재하지 않는 유저 <br>"
                             + "4001: 파일 변환 실패 <br>"),
     })
-    public ResponseEntity<CommonResponse<Void>> postInterviewVideo(
+    public ResponseEntity<CommonResponse<String>> postInterviewVideo(
             @RequestPart("video") MultipartFile video
     ) {
         long memberId = jwtService.getMemberIdFromJwt();
         String dirName = "jasome/users/" + memberId + "/interviews";
-        s3UploaderService.upload(video, dirName);
+        String videoUrl = s3UploaderService.upload(video, dirName);
+        return ResponseEntity.ok(CommonResponse.from(videoUrl));
+    }
+
+    @NoAuth
+    @PostMapping("/result")
+    @ApiOperation(value = "면접 결과 저장")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"
+                            + "4001: 파일 변환 실패 <br>"),
+    })
+    public ResponseEntity<CommonResponse<Void>> postInterviewResult(
+            @RequestPart("video") MultipartFile video,
+            @RequestPart("result") InterviewResultDto result
+    ) {
+        // long memberId = jwtService.getMemberIdFromJwt();
+        // String dirName = "jasome/users/" + memberId + "/interviews";
+        // s3UploaderService.upload(video, dirName);
         return ResponseEntity.ok(new CommonResponse<>());
     }
 }
