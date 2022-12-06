@@ -1,9 +1,12 @@
 package com.diveinku.jasome.src.service;
 
+import com.diveinku.jasome.src.domain.Interview;
 import com.diveinku.jasome.src.domain.Member;
 import com.diveinku.jasome.src.dto.InterviewQuestionDto;
+import com.diveinku.jasome.src.dto.InterviewResultDto;
 import com.diveinku.jasome.src.exception.member.NonExistentMemberException;
 import com.diveinku.jasome.src.repository.CommonQuestionRepository;
+import com.diveinku.jasome.src.repository.InterviewRepository;
 import com.diveinku.jasome.src.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +22,13 @@ import java.util.stream.Collectors;
 public class InterviewService {
     private final MemberRepository memberRepository;
     private final CommonQuestionRepository commonQuestionRepository;
+    private final InterviewRepository interviewRepository;
 
     @Autowired
-    public InterviewService(MemberRepository memberRepository, CommonQuestionRepository commonQuestionRepository) {
+    public InterviewService(MemberRepository memberRepository, CommonQuestionRepository commonQuestionRepository, InterviewRepository interviewRepository) {
         this.memberRepository = memberRepository;
         this.commonQuestionRepository = commonQuestionRepository;
+        this.interviewRepository = interviewRepository;
     }
 
     public void addQuestions(long memberId, List<InterviewQuestionDto> questions) {
@@ -85,5 +90,13 @@ public class InterviewService {
                 .stream()
                 .map(InterviewQuestionDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public long createMembersInterview(long memberId, InterviewResultDto interviewResultDto) {
+        Member member = memberRepository.findOne(memberId)
+                .orElseThrow(NonExistentMemberException::new);
+        Interview interview = Interview.createInterview(member, interviewResultDto);
+        interviewRepository.save(interview);
+        return interview.getId();
     }
 }

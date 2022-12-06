@@ -92,7 +92,6 @@ public class InterviewController {
         return ResponseEntity.ok(CommonResponse.from(videoUrl));
     }
 
-    @NoAuth
     @PostMapping("/result")
     @ApiOperation(value = "면접 결과 저장")
     @ApiResponses(value = {
@@ -101,13 +100,24 @@ public class InterviewController {
                     "2004: 존재하지 않는 유저 <br>"
                             + "4001: 파일 변환 실패 <br>"),
     })
-    public ResponseEntity<CommonResponse<Void>> postInterviewResult(
-            @RequestPart("video") MultipartFile video,
-            @RequestPart("result") InterviewResultDto result
+    public ResponseEntity<CommonResponse<Long>> postInterviewResult(
+            @RequestBody InterviewResultDto result
     ) {
-        // long memberId = jwtService.getMemberIdFromJwt();
-        // String dirName = "jasome/users/" + memberId + "/interviews";
-        // s3UploaderService.upload(video, dirName);
-        return ResponseEntity.ok(new CommonResponse<>());
+        long memberId = jwtService.getMemberIdFromJwt();
+        long interviewId = interviewService.createMembersInterview(memberId, result);
+        return ResponseEntity.ok(CommonResponse.from(interviewId));
     }
+
+    // @GetMapping("/results")
+    // @ApiOperation(value = "면접 목록 조회")
+    // @ApiResponses(value = {
+    //         @ApiResponse(code = 200, message = "1000: 요청 성공"),
+    //         @ApiResponse(code = 400, message =
+    //                 "2004: 존재하지 않는 유저 <br>"
+    //                         + "4001: 파일 변환 실패 <br>"),
+    // })
+    // public ResponseEntity<CommonResponse<List<InterviewPreviewDto>>> getInterviewPreviews(){
+    //     long memberId = jwtService.getMemberIdFromJwt();
+    //     return ResponseEntity.ok(CommonResponse.from(interviewService.getMembersInterviewPreviews(memberId)));
+    // }
 }
