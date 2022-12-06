@@ -2,9 +2,10 @@ package com.diveinku.jasome.src.service;
 
 import com.diveinku.jasome.src.domain.Interview;
 import com.diveinku.jasome.src.domain.Member;
-import com.diveinku.jasome.src.dto.InterviewQuestionDto;
-import com.diveinku.jasome.src.dto.InterviewResultDto;
+import com.diveinku.jasome.src.dto.*;
+import com.diveinku.jasome.src.exception.interview.NonExistentInterviewException;
 import com.diveinku.jasome.src.exception.member.NonExistentMemberException;
+import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import com.diveinku.jasome.src.repository.CommonQuestionRepository;
 import com.diveinku.jasome.src.repository.InterviewRepository;
 import com.diveinku.jasome.src.repository.MemberRepository;
@@ -98,5 +99,28 @@ public class InterviewService {
         Interview interview = Interview.createInterview(member, interviewResultDto);
         interviewRepository.save(interview);
         return interview.getId();
+    }
+
+    public List<InterviewPreviewDto> getMembersInterviewPreviews(long memberId) {
+        Member member = memberRepository.findOne(memberId)
+                .orElseThrow(NonExistentMemberException::new);
+        return interviewRepository.findAllByMemberId(member).stream().map(r -> new InterviewPreviewDto(r.getId(), r.getTitle()))
+                .collect(Collectors.toList());
+    }
+
+    public InterviewDto getInterviewById(Long interviewId) {
+        Interview interview = interviewRepository.findOne(interviewId)
+                .orElseThrow(NonExistentInterviewException::new);
+        return InterviewDto
+                .builder()
+                .title(interview.getTitle())
+                .videoUrl(interview.getVideoUrl())
+                .emotions(interview.getEmotions())
+                .emotionValues(interview.getEmotionValues())
+                .x(interview.getX())
+                .y(interview.getY())
+                .qnas(interview.getQnas().stream().map(qna -> new InterviewQnaDto(qna.getQuestion(), qna.getAnswer())).collect(Collectors.toList()))
+                .wordCounts(interview.getWordCounts().stream().map(wordCount -> new WordCountDto(wordCount.getWord(), wordCount.getNumber())).collect(Collectors.toList()))
+                .build();
     }
 }

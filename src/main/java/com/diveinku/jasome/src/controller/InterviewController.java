@@ -2,6 +2,8 @@ package com.diveinku.jasome.src.controller;
 
 import com.diveinku.jasome.src.commons.CommonResponse;
 import com.diveinku.jasome.src.commons.NoAuth;
+import com.diveinku.jasome.src.dto.InterviewDto;
+import com.diveinku.jasome.src.dto.InterviewPreviewDto;
 import com.diveinku.jasome.src.dto.InterviewQuestionDto;
 import com.diveinku.jasome.src.dto.InterviewResultDto;
 import com.diveinku.jasome.src.service.InterviewService;
@@ -108,16 +110,29 @@ public class InterviewController {
         return ResponseEntity.ok(CommonResponse.from(interviewId));
     }
 
-    // @GetMapping("/results")
-    // @ApiOperation(value = "면접 목록 조회")
-    // @ApiResponses(value = {
-    //         @ApiResponse(code = 200, message = "1000: 요청 성공"),
-    //         @ApiResponse(code = 400, message =
-    //                 "2004: 존재하지 않는 유저 <br>"
-    //                         + "4001: 파일 변환 실패 <br>"),
-    // })
-    // public ResponseEntity<CommonResponse<List<InterviewPreviewDto>>> getInterviewPreviews(){
-    //     long memberId = jwtService.getMemberIdFromJwt();
-    //     return ResponseEntity.ok(CommonResponse.from(interviewService.getMembersInterviewPreviews(memberId)));
-    // }
+    @GetMapping("/result")
+    @ApiOperation(value = "면접 목록 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"),
+    })
+    public ResponseEntity<CommonResponse<List<InterviewPreviewDto>>> getInterviewPreviews(){
+        long memberId = jwtService.getMemberIdFromJwt();
+        return ResponseEntity.ok(CommonResponse.from(interviewService.getMembersInterviewPreviews(memberId)));
+    }
+
+    @GetMapping("/result/{interviewId}")
+    @ApiOperation(value = "면접 조회")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"
+                            + "4002: 존재하지 않는 면접 번호 <br>"),
+    })
+    public ResponseEntity<CommonResponse<InterviewDto>> getInterviewPreviews(
+            @PathVariable("interviewId") Long interviewId
+    ){
+        return ResponseEntity.ok(CommonResponse.from(interviewService.getInterviewById(interviewId)));
+    }
 }

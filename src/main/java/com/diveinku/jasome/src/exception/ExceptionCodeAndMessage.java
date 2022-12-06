@@ -2,6 +2,7 @@ package com.diveinku.jasome.src.exception;
 
 import com.diveinku.jasome.src.exception.common.*;
 import com.diveinku.jasome.src.exception.interview.FileConvertException;
+import com.diveinku.jasome.src.exception.interview.NonExistentInterviewException;
 import com.diveinku.jasome.src.exception.member.*;
 import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import lombok.AllArgsConstructor;
@@ -43,6 +44,7 @@ public enum ExceptionCodeAndMessage {
 
     // 인터뷰
     FILE_CONVERT_FAIL(4001, "파일 변환에 실패했습니다", FileConvertException.class),
+    INCORRECT_INTERVIEW_ID(4002,"존재하지 않는 모의 면접입니다.", NonExistentInterviewException.class),
     ;
 
     private final int code;
