@@ -130,9 +130,25 @@ public class InterviewController {
                     "2004: 존재하지 않는 유저 <br>"
                             + "4002: 존재하지 않는 면접 번호 <br>"),
     })
-    public ResponseEntity<CommonResponse<InterviewDto>> getInterviewPreviews(
+    public ResponseEntity<CommonResponse<InterviewDto>> getInterview(
             @PathVariable("interviewId") Long interviewId
     ){
         return ResponseEntity.ok(CommonResponse.from(interviewService.getInterviewById(interviewId)));
     }
+
+    @DeleteMapping("/result/{interviewId}")
+    @ApiOperation(value = "면접 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1000: 요청 성공"),
+            @ApiResponse(code = 400, message =
+                    "2004: 존재하지 않는 유저 <br>"
+                            + "4002: 존재하지 않는 면접 번호 <br>"),
+    })
+    public ResponseEntity<CommonResponse<InterviewDto>> deleteInterview(
+            @PathVariable("interviewId") Long interviewId
+    ){
+        interviewService.deleteInterviewById(interviewId);
+        return ResponseEntity.ok(new CommonResponse<>());
+    }
+
 }

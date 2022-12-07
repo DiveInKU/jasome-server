@@ -30,4 +30,8 @@ public class InterviewRepository {
     public Optional<Interview> findOne(Long interviewId) {
         return Optional.ofNullable(em.find(Interview.class, interviewId));
     }
+
+    public void delete(Interview interview) {
+        em.remove(interview);
+    }
 }

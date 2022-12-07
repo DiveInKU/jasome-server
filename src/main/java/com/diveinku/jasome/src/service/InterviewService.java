@@ -122,4 +122,10 @@ public class InterviewService {
                 .wordCounts(interview.getWordCounts().stream().map(wordCount -> new WordCountDto(wordCount.getWord(), wordCount.getCount())).collect(Collectors.toList()))
                 .build();
     }
+
+    public void deleteInterviewById(Long interviewId) {
+        Interview interview = interviewRepository.findOne(interviewId)
+                .orElseThrow(NonExistentInterviewException::new);
+        interviewRepository.delete(interview);
+    }
 }
