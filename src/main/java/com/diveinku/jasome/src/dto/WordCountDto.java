@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class WordCountDto {
     private String word;
-    private int number;
+    private int count;
 }

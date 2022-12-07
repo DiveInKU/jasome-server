@@ -5,7 +5,6 @@ import com.diveinku.jasome.src.domain.Member;
 import com.diveinku.jasome.src.dto.*;
 import com.diveinku.jasome.src.exception.interview.NonExistentInterviewException;
 import com.diveinku.jasome.src.exception.member.NonExistentMemberException;
-import com.diveinku.jasome.src.exception.resume.NonExistentResumeException;
 import com.diveinku.jasome.src.repository.CommonQuestionRepository;
 import com.diveinku.jasome.src.repository.InterviewRepository;
 import com.diveinku.jasome.src.repository.MemberRepository;
@@ -120,7 +119,7 @@ public class InterviewService {
                 .x(interview.getX())
                 .y(interview.getY())
                 .qnas(interview.getQnas().stream().map(qna -> new InterviewQnaDto(qna.getQuestion(), qna.getAnswer())).collect(Collectors.toList()))
-                .wordCounts(interview.getWordCounts().stream().map(wordCount -> new WordCountDto(wordCount.getWord(), wordCount.getNumber())).collect(Collectors.toList()))
+                .wordCounts(interview.getWordCounts().stream().map(wordCount -> new WordCountDto(wordCount.getWord(), wordCount.getCount())).collect(Collectors.toList()))
                 .build();
     }
 }

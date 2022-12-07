@@ -85,7 +85,7 @@ public class Interview {
                 .member(member)
                 .build();
         interview.qnas = interviewResultDto.getQnas().stream().map(qna -> new InterviewQna(interview, qna.getQuestion(), qna.getAnswer())).collect(Collectors.toList());
-        interview.wordCounts = interviewResultDto.getWordCounts().stream().map(wordCount -> new WordCount(interview, wordCount.getWord(), wordCount.getNumber())).collect(Collectors.toList());
+        interview.wordCounts = interviewResultDto.getWordCounts().stream().map(wordCount -> new WordCount(interview, wordCount.getWord(), wordCount.getCount())).collect(Collectors.toList());
         return interview;
     }
 }

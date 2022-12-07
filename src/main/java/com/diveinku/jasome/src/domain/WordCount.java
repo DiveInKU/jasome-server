@@ -1,7 +1,6 @@
 package com.diveinku.jasome.src.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,11 +22,11 @@ public class WordCount {
     @Column(length = 20)
     private String word;
 
-    private int number;
+    private int count;
 
-    public WordCount(Interview interview, String word, int number) {
+    public WordCount(Interview interview, String word, int count) {
         this.interview = interview;
         this.word = word;
-        this.number = number;
+        this.count = count;
     }
 }
