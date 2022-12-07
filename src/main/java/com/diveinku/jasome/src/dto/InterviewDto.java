@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 public class InterviewDto {
     private String title;
     private String videoUrl;
@@ -22,4 +21,16 @@ public class InterviewDto {
     private List<Float> y;
     private List<InterviewQnaDto> qnas = new ArrayList<>();
     private List<WordCountDto> wordCounts = new ArrayList<>();
+
+    @Builder
+    public InterviewDto(String title, String videoUrl, List<String> emotions, List<Integer> emotionValues, List<Float> x, List<Float> y, List<InterviewQnaDto> qnas, List<WordCountDto> wordCounts) {
+        this.title = title;
+        this.videoUrl = videoUrl;
+        this.emotions = emotions;
+        this.emotionValues = emotionValues;
+        this.x = x;
+        this.y = y;
+        this.qnas = qnas;
+        this.wordCounts = wordCounts;
+    }
 }
